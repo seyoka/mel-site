@@ -3,7 +3,6 @@
 // pages/index.tsx
 import { useState } from 'react';
 
-import dynamic from "next/dynamic";
 import 'leaflet/dist/leaflet.css';
 
 import MapComponent from "../components/MapComponent";
