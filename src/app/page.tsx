@@ -3,7 +3,8 @@
 // pages/index.tsx
 import { useState } from 'react';
 import HeartMarker from '../components/HeartMarker';
-import { MapContainer, TileLayer } from 'react-leaflet';
+
+import dynamic from "next/dynamic";
 import 'leaflet/dist/leaflet.css';
 
 type Heart = {
@@ -12,6 +13,9 @@ type Heart = {
   image: string;
   description: string;
 };
+
+const DynamicMap = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
+const DynamicTileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false });
 
 const heartData: Heart[] = [
   {
@@ -108,12 +112,12 @@ export default function Home() {
       {/* Map Frame */}
       <div className="bg-gray-800 rounded-lg p-4 shadow-lg w-full max-w-[90%] md:max-w-[800px]">
         <div className="relative w-full h-[400px] md:h-[600px]">
-          <MapContainer
+          <DynamicMap
             center={[52.666259328697194, -8.630123]} // Centered on Limerick
             zoom={13}
             className="h-full w-full rounded-lg"
           >
-            <TileLayer
+            <DynamicTileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution="&copy; OpenStreetMap contributors"
             />
@@ -124,7 +128,7 @@ export default function Home() {
                 onClick={() => setSelectedHeart(heart)}
               />
             ))}
-          </MapContainer>
+          </DynamicMap>
 
           {/* Selected Heart Popup */}
           {selectedHeart && (
