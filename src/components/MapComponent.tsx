@@ -1,19 +1,19 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import HeartMarker from "./HeartMarker";
 import "leaflet/dist/leaflet.css";
-
-const DynamicMap = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
-const DynamicTileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false });
-
+import HeartMarker from "./HeartMarker";
 
 type Heart = {
-    id: number;
-    coordinates: { lat: number; lng: number };
-    image: string;
-    description: string;
-  };
+  id: number;
+  coordinates: { lat: number; lng: number };
+  image: string;
+  description: string;
+};
+
+// Dynamically import Leaflet components
+const DynamicMap = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
+const DynamicTileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false });
 
 type MapComponentProps = {
   hearts: Heart[];
@@ -23,7 +23,7 @@ type MapComponentProps = {
 export default function MapComponent({ hearts, onHeartClick }: MapComponentProps) {
   return (
     <DynamicMap
-      center={[52.666259328697194, -8.630123]} // Centered on Limerick
+      center={[52.666259328697194, -8.630123]}
       zoom={13}
       className="h-full w-full rounded-lg"
     >

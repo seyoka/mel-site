@@ -3,7 +3,7 @@
 // pages/index.tsx
 import { useState } from 'react';
 
-import 'leaflet/dist/leaflet.css';
+
 
 import MapComponent from "../components/MapComponent";
 
@@ -101,20 +101,17 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-4">
-      {/* Title Section */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold">places that mean the most to me ❤️</h1>
-        <p className="text-lg md:text-xl mt-2">click on each heart to see, I love you mel</p>
+        <h1 className="text-3xl md:text-4xl font-bold">Places that mean the most to me ❤️</h1>
+        <p className="text-lg md:text-xl mt-2">Click on each heart to see, I love you mel</p>
       </div>
 
-      {/* Map Frame */}
       <div className="bg-gray-800 rounded-lg p-4 shadow-lg w-full max-w-[90%] md:max-w-[800px]">
-        <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px]">
+        <div className="relative w-full h-[400px] sm:h-[500px]">
           <MapComponent hearts={heartData} onHeartClick={(heart) => setSelectedHeart(heart)} />
         </div>
       </div>
 
-      {/* Selected Heart Popup */}
       {selectedHeart && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
