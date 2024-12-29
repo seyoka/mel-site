@@ -15,8 +15,6 @@ type Heart = {
   description: string;
 };
 
-const DynamicMap = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
-const DynamicTileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false });
 
 const heartData: Heart[] = [
   {
