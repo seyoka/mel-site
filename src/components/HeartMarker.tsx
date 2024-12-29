@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { Icon } from "leaflet"; // Import the Icon type
+import Image from "next/image"; // Use Next.js's optimized Image component
 
 type Heart = {
   id: number;
@@ -20,7 +22,7 @@ type HeartMarkerProps = {
 };
 
 const HeartMarker: React.FC<HeartMarkerProps> = ({ heart, onClick }) => {
-  const [heartIcon, setHeartIcon] = useState<any>(null);
+  const [heartIcon, setHeartIcon] = useState<Icon | null>(null);
 
   useEffect(() => {
     // Dynamically import Leaflet for client-side use
@@ -46,10 +48,12 @@ const HeartMarker: React.FC<HeartMarkerProps> = ({ heart, onClick }) => {
     >
       <DynamicPopup>
         <div>
-          <img
+          <Image
             src={heart.image}
             alt="Memory"
-            style={{ maxWidth: "100%", borderRadius: "8px" }}
+            width={300} // Specify width for Next.js Image component
+            height={200} // Specify height for Next.js Image component
+            style={{ borderRadius: "8px" }}
           />
           <p>{heart.description}</p>
         </div>
