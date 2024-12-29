@@ -3,7 +3,7 @@
 // pages/index.tsx
 import { useState } from 'react';
 import HeartMarker from '../components/HeartMarker';
-
+import { useEffect, } from "react";
 import dynamic from "next/dynamic";
 import 'leaflet/dist/leaflet.css';
 
@@ -100,6 +100,12 @@ const heartData: Heart[] = [
 
 export default function Home() {
   const [selectedHeart, setSelectedHeart] = useState<Heart | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  // Ensure rendering only happens on the client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-4">
@@ -112,23 +118,25 @@ export default function Home() {
       {/* Map Frame */}
       <div className="bg-gray-800 rounded-lg p-4 shadow-lg w-full max-w-[90%] md:max-w-[800px]">
         <div className="relative w-full h-[400px] md:h-[600px]">
-          <DynamicMap
-            center={[52.666259328697194, -8.630123]} // Centered on Limerick
-            zoom={13}
-            className="h-full w-full rounded-lg"
-          >
-            <DynamicTileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution="&copy; OpenStreetMap contributors"
-            />
-            {heartData.map((heart) => (
-              <HeartMarker
-                key={heart.id}
-                heart={heart}
-                onClick={() => setSelectedHeart(heart)}
+          {isClient && (
+            <DynamicMap
+              center={[52.666259328697194, -8.630123]} // Centered on Limerick
+              zoom={13}
+              className="h-full w-full rounded-lg"
+            >
+              <DynamicTileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; OpenStreetMap contributors"
               />
-            ))}
-          </DynamicMap>
+              {heartData.map((heart) => (
+                <HeartMarker
+                  key={heart.id}
+                  heart={heart}
+                  onClick={() => setSelectedHeart(heart)}
+                />
+              ))}
+            </DynamicMap>
+          )}
 
           {/* Selected Heart Popup */}
           {selectedHeart && (
