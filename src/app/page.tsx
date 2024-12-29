@@ -2,8 +2,7 @@
 
 // pages/index.tsx
 import { useState } from 'react';
-import HeartMarker from '../components/HeartMarker';
-import { useEffect, } from "react";
+
 import dynamic from "next/dynamic";
 import 'leaflet/dist/leaflet.css';
 
