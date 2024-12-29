@@ -7,6 +7,8 @@ import { useEffect, } from "react";
 import dynamic from "next/dynamic";
 import 'leaflet/dist/leaflet.css';
 
+import MapComponent from "../components/MapComponent";
+
 type Heart = {
   id: number;
   coordinates: { lat: number; lng: number };
@@ -100,65 +102,47 @@ const heartData: Heart[] = [
 
 export default function Home() {
   const [selectedHeart, setSelectedHeart] = useState<Heart | null>(null);
-  const [isClient, setIsClient] = useState(false);
-
-  // Ensure rendering only happens on the client
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-4">
       {/* Title Section */}
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold">places that mean the most to me ❤️</h1>
-        <p className="text-lg mt-2">click on each heart to see, I love you mel</p>
+        <h1 className="text-3xl md:text-4xl font-bold">places that mean the most to me ❤️</h1>
+        <p className="text-lg md:text-xl mt-2">click on each heart to see, I love you mel</p>
       </div>
 
       {/* Map Frame */}
       <div className="bg-gray-800 rounded-lg p-4 shadow-lg w-full max-w-[90%] md:max-w-[800px]">
-        <div className="relative w-full h-[400px] md:h-[600px]">
-          {isClient && (
-            <DynamicMap
-              center={[52.666259328697194, -8.630123]} // Centered on Limerick
-              zoom={13}
-              className="h-full w-full rounded-lg"
-            >
-              <DynamicTileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution="&copy; OpenStreetMap contributors"
-              />
-              {heartData.map((heart) => (
-                <HeartMarker
-                  key={heart.id}
-                  heart={heart}
-                  onClick={() => setSelectedHeart(heart)}
-                />
-              ))}
-            </DynamicMap>
-          )}
-
-          {/* Selected Heart Popup */}
-          {selectedHeart && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-white p-4 shadow-lg rounded-lg text-black max-w-[90%] md:max-w-[400px]">
-                <img
-                  src={selectedHeart.image}
-                  alt="Memory"
-                  className="max-w-full max-h-[300px] w-auto h-auto object-cover rounded-md mb-2"
-                />
-                <p>{selectedHeart.description}</p>
-                <button
-                  onClick={() => setSelectedHeart(null)}
-                  className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
+        <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px]">
+          <MapComponent hearts={heartData} onHeartClick={(heart) => setSelectedHeart(heart)} />
         </div>
       </div>
+
+      {/* Selected Heart Popup */}
+      {selectedHeart && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+          onClick={() => setSelectedHeart(null)}
+        >
+          <div
+            className="bg-white p-4 shadow-lg rounded-lg text-black max-w-[90%] md:max-w-[400px] max-h-[80%] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={selectedHeart.image}
+              alt="Memory"
+              className="max-w-full max-h-[300px] w-auto h-auto object-cover rounded-md mb-2"
+            />
+            <p className="text-center">{selectedHeart.description}</p>
+            <button
+              onClick={() => setSelectedHeart(null)}
+              className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg w-full"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
